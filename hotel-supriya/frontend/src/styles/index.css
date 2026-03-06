@@ -1,0 +1,149 @@
+@import "react-datepicker/dist/react-datepicker.css";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ── */
+:root {
+  --gold:        #C9A84C;
+  --gold-light:  #F0D080;
+  --gold-dark:   #8B6914;
+  --gold-subtle: rgba(201,168,76,0.12);
+  --black:       #060606;
+  --black-card:  #0D0D0D;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: white;
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+}
+
+::selection { background: rgba(201,168,76,0.25); color: white; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* ── Utility Classes ── */
+
+/* Metallic gold gradient text */
+.gold-text {
+  background: linear-gradient(135deg, #C9A84C 0%, #F0D080 40%, #C9A84C 60%, #8B6914 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Compatibility alias */
+.text-gold { color: #C9A84C; }
+
+/* Gold gradient button fill */
+.gold-gradient {
+  background: linear-gradient(135deg, #C9A84C, #F0D080, #C9A84C);
+}
+
+/* Glass card */
+.glass {
+  background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, rgba(0,0,0,0.45) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(201,168,76,0.18);
+}
+
+/* CTA Button */
+.cta-btn {
+  position: relative;
+  background: linear-gradient(135deg, #C9A84C, #F0D080, #C9A84C);
+  color: black;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #F0D080, #C9A84C);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+.cta-btn:hover::before { opacity: 1; }
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 60px rgba(201,168,76,0.35); }
+.cta-btn > * { position: relative; z-index: 1; }
+
+/* Shimmer sweep */
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3.5s infinite;
+}
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+/* Noise texture overlay */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* Page header band */
+.page-hero {
+  position: relative;
+  height: 38vh;
+  min-height: 280px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4rem;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(201,168,76,0.08), transparent 70%);
+}
+.page-hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.8) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.8) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(500px) rotateX(55deg) translateY(-25%);
+  transform-origin: 50% 100%;
+}
+
+/* Divider ornament */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+.ornament::before, .ornament::after {
+  content: '';
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.6));
+}
+.ornament::after { background: linear-gradient(to left, transparent, rgba(201,168,76,0.6)); }
