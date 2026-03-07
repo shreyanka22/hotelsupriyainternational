@@ -1,8 +1,7 @@
-
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-const API = "https://hotel-supriya-backend.onrender.com/api"
+const API = (import.meta.env.VITE_API_URL || "http://localhost:5001") + "/api"
 const api = (path, opts = {}) =>
   fetch(`${API}${path}`, { credentials: "include", ...opts }).then((r) => r.json())
 
@@ -159,7 +158,7 @@ export default function AdminDashboard() {
         <p className="text-gray-600 mb-12 tracking-[0.4em] uppercase text-xs" style={{ fontFamily:"'Cinzel',serif" }}>
           Hotel Supriya International
         </p>
-        <motion.a href="https://hotel-supriya-backend.onrender.com/api/auth/google"
+        <motion.a href={`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/auth/google`}
           className="inline-flex items-center gap-4 px-10 py-4 rounded-sm"
           style={{ background:"linear-gradient(135deg,#C9A84C,#F0D080)", color:"black" }}
           whileHover={{ scale:1.04, boxShadow:"0 20px 60px rgba(201,168,76,0.35)" }}>

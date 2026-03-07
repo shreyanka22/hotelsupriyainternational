@@ -31,7 +31,7 @@ export default function ReviewSection() {
 
   // Load approved reviews from backend
   useEffect(() => {
-    fetch("https://hotel-supriya-backend.onrender.com/api/reviews")
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/reviews`)
       .then((r) => r.json())
       .then((data) => setReviews(Array.isArray(data) ? data : []))
       .catch(() => setReviews([]))
@@ -46,7 +46,7 @@ export default function ReviewSection() {
 
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:5001/api/reviews/submit", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api/reviews/submit`, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
