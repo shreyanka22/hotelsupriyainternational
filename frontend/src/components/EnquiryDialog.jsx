@@ -597,7 +597,7 @@ export default function EnquiryDialog({ open, setOpen }) {
 
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:5001/api/enquiries", {
+      const res = await fetch("https://hotel-supriya-backend.onrender.com/api/enquiries", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

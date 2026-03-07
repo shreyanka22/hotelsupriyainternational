@@ -31,7 +31,7 @@ export default function ReviewSection() {
 
   // Load approved reviews from backend
   useEffect(() => {
-    fetch("http://localhost:5001/api/reviews")
+    fetch("https://hotel-supriya-backend.onrender.com/api/reviews")
       .then((r) => r.json())
       .then((data) => setReviews(Array.isArray(data) ? data : []))
       .catch(() => setReviews([]))
