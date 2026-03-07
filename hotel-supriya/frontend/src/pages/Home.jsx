@@ -2497,7 +2497,7 @@ export default function Home() {
             {[
               { img: "https://hotelsupriyainternational.com/images/tourism/1.jpg", title: "Sahasralinga",     dist: "18 km away"  },
               { img: "https://hotelsupriyainternational.com/images/tourism/2.jpg", title: "Unchalli Falls",   dist: "35 km away"  },
-              { img: "https://hotelsupriyainternational.com/images/tourism/5.jpg", title: "Marikamba Temple", dist: "City Center"  },
+              { img: "https://hotelsupriyainternational.com/images/tourism/5.jpg", title: "Yana Caves", dist: "City Center"  },
             ].map((place, i) => (
               <motion.div
                 key={i}
