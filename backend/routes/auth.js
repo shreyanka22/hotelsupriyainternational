@@ -100,31 +100,23 @@ router.get("/google", (req, res, next) => {
 })
 
 /* ── Google callback ── */
-router.get("/google/callback", (req, res, next) => {
-  passport.authenticate("google", (err, user, info) => {
-    if (err) {
-      console.error("OAuth error:", err)
-      return res.redirect(`${process.env.CLIENT_URL}/admin?error=oauth_error`)
-    }
-    if (!user) {
-      console.error("OAuth no user:", info?.message)
-      return res.redirect(`${process.env.CLIENT_URL}/admin?error=unauthorized`)
-    }
-    // Regenerate session to avoid fixation attacks
-    req.session.regenerate((sessionErr) => {
-      if (sessionErr) console.error("Session regenerate error:", sessionErr)
-      req.user = user
-      // Pass user via URL params — bypasses all cookie/session issues
-      const params = new URLSearchParams({
-        loggedIn: "true",
-        name:     user.name   || "",
-        email:    user.email  || "",
-        avatar:   user.avatar || "",
-      })
-      return res.redirect(`${process.env.CLIENT_URL}/admin?${params.toString()}`)
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: process.env.CLIENT_URL + "/admin" }),
+  (req, res) => {
+
+    const user = req.user
+
+    const params = new URLSearchParams({
+      loggedIn: "true",
+      name: user.name || "",
+      email: user.email || "",
+      avatar: user.avatar || ""
     })
-  })(req, res, next)
-})
+
+    res.redirect(`${process.env.CLIENT_URL}/admin?${params.toString()}`)
+  }
+)
 
 /* ── Check session ── */
 router.get("/me", (req, res) => {
