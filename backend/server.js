@@ -140,18 +140,17 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "supriya_secret",
   resave: false,
   saveUninitialized: false,
+  proxy: true,  // VERY important for Render
+
   store: MongoStore.create({
-    mongoUrl,
-    touchAfter: 24 * 3600,
+    mongoUrl: process.env.MONGO_URI,
   }),
+
   cookie: {
     secure: true,
-    httpOnly: true,
     sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24,
   },
 }))
-
 /* ── Passport ── */
 app.use(passport.initialize())
 app.use(passport.session())
