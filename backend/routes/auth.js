@@ -126,9 +126,11 @@ router.get("/me", (req, res) => {
 
 /* ── Logout ── */
 router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) console.error("Logout error:", err)
-    res.json({ success: true })
+  req.logout(() => {
+    req.session.destroy((err) => {
+      if (err) console.error("Logout error:", err)
+      res.json({ success: true })
+    })
   })
 })
 
