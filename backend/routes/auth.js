@@ -89,12 +89,15 @@ import passport from "passport"
 const router = express.Router()
 
 /* ── Start Google login ── */
-router.get("/google",
-  passport.authenticate("google", { 
-    scope: ["profile", "email"],
-    prompt: "select_account",
+router.get("/google", (req, res, next) => {
+  // Destroy any existing session first to avoid Bad Request on re-login
+  req.session.destroy(() => {
+    passport.authenticate("google", {
+      scope: ["profile", "email"],
+      prompt: "select_account",
+    })(req, res, next)
   })
-)
+})
 
 /* ── Google callback ── */
 router.get("/google/callback", (req, res, next) => {
@@ -104,15 +107,14 @@ router.get("/google/callback", (req, res, next) => {
       return res.redirect(`${process.env.CLIENT_URL}/admin?error=oauth_error`)
     }
     if (!user) {
-      console.error("OAuth no user:", info)
+      console.error("OAuth no user:", info?.message)
       return res.redirect(`${process.env.CLIENT_URL}/admin?error=unauthorized`)
     }
-    req.logIn(user, (loginErr) => {
-      if (loginErr) {
-        console.error("Login error:", loginErr)
-        return res.redirect(`${process.env.CLIENT_URL}/admin?error=login_error`)
-      }
-      // Pass user via URL params (bypasses cookie issues)
+    // Regenerate session to avoid fixation attacks
+    req.session.regenerate((sessionErr) => {
+      if (sessionErr) console.error("Session regenerate error:", sessionErr)
+      req.user = user
+      // Pass user via URL params — bypasses all cookie/session issues
       const params = new URLSearchParams({
         loggedIn: "true",
         name:     user.name   || "",
@@ -133,10 +135,9 @@ router.get("/me", (req, res) => {
 })
 
 /* ── Logout ── */
-router.post("/logout", (req, res, next) => {
-  req.logout((err) => {
-    if (err) return next(err)
-    req.session.destroy()
+router.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) console.error("Logout error:", err)
     res.json({ success: true })
   })
 })
