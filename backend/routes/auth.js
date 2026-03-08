@@ -89,15 +89,13 @@ import passport from "passport"
 const router = express.Router()
 
 /* ── Start Google login ── */
-router.get("/google", (req, res, next) => {
-  // Destroy any existing session first to avoid Bad Request on re-login
-  req.session.destroy(() => {
-    passport.authenticate("google", {
-      scope: ["profile", "email"],
-      prompt: "select_account",
-    })(req, res, next)
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
   })
-})
+)
 
 /* ── Google callback ── */
 router.get(
